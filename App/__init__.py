@@ -1,17 +1,17 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from .config import Config
+from .database.db import db
 
 class App:
     def __init__(self,name):
         self.name = name
         self.app = Flask(name)
 
-        # FixMe : Connect to the database in Schema
+        # FixMe : Connect to the database in Schema (Done)
         self.app.config['SQLALCHEMY_DATABASE_URI'] = Config.DATA_URI
         self.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         self.app.config['SECRET_KEY'] = Config.SECRET_KEY
-        self.db = SQLAlchemy()
+
 
 
     def create_app(self):
@@ -23,6 +23,6 @@ class App:
         MainRoute(self.app)
         UserRoute(self.app)
 
-        self.db.init_app(self.app)
+        db.init_app(self.app)
 
         return self.app
